@@ -1,0 +1,57 @@
+# Fasd command-line productivity booster
+if [ command fasd > /dev/null 2>&1 ]; then
+	eval "$(fasd --init auto)"
+	alias v='f -e vim' # quick opening files with vim
+fi
+
+# Alias definitions.
+alias sudo='sudo env PATH=$PATH'
+alias tmux='tmux -2'
+
+# User environment settings
+# Anti-aliasing of fonts is available with Oracle Java 1.6 on Linux.
+#export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=setting'
+#Replace setting with one of the following seven values:
+#off or false or default – No anti-aliasing
+#on – Full anti-aliasing
+#gasp – Use the font's built-in hinting instructions
+#lcd or lcd_hrgb – Anti-aliasing tuned for many popular LCD monitors
+#lcd_hbgr – Alternative LCD monitor setting
+#lcd_vrgb – Alternative LCD monitor setting
+#lcd_vbgr – Alternative LCD monitor setting
+#The gasp and lcd settings work well in many instances.
+
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
+#export _JAVA_OPTIONS='-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel'
+
+# includes android sdk path
+ANDROID_SDK_ROOT=$HOME/workarea/embedded/android/sdk/android-sdk-linux
+ANDROID_SDK_TOOLS=$ANDROID_SDK_ROOT/tools
+ANDROID_SDK_PLATFORM_TOOLS=$ANDROID_SDK_ROOT/platform-tools
+export PATH=$HOME/workarea/embedded/android/bin:$ANDROID_SDK_TOOLS:$ANDROID_SDK_PLATFORM_TOOLS:$HOME/workarea/embedded/android/ndk/android-ndk-r5c/:$PATH
+
+# default editor
+export EDITOR=vim
+export GIT_EDITOR=vim
+
+# http proxy setting (local NTLM authentication)
+export HTTP_PROXY=http://localhost:5865
+export HTTPS_PROXY=$HTTP_PROXY
+export FTP_PROXY=$HTTP_PROXY
+export http_proxy=$HTTP_PROXY
+export https_proxy=$HTTP_PROXY
+export ftp_proxy=$HTTP_PROXY
+
+# git ssh via proxy
+export GIT_PROXY_COMMAND="$HOME/workarea/embedded/android/bin/socks-gw.sh"
+export GIT_SSH="$HOME/workarea/embedded/android/bin/socks-ssh.sh"
+
+# excluded hidden version control directories from grep
+GREP_OPTIONS=
+for pattern in .cvs .git .hg .svn; do
+    GREP_OPTIONS="$GREP_OPTIONS --exclude-dir=$pattern"
+done
+export GREP_OPTIONS
+
+# minicom settings
+export MINICOM='-m -c on -w'

@@ -1,0 +1,69 @@
+# python scripting for QT's pretty printers.
+python
+import sys
+sys.path.insert(0, '/home/ralph/workarea/embedded/gdb/kdevelop/debuggers/gdb/printers')
+
+from qt4 import register_qt4_printers
+register_qt4_printers (None)
+
+from kde4 import register_kde4_printers
+register_kde4_printers (None)
+
+#from libstdcxx import register_libstdcxx_printers
+#register_libstdcxx_printers (None)
+end
+
+# python scripting for Webkit debugging
+python
+import sys
+sys.path.insert(0, '/home/ralph/workarea/embedded/gdb/webkittool')
+import webkittool
+end
+
+# python scripting for QT-webcore pretty printers.
+python
+import sys
+sys.path.insert(0, '/home/ralph/workarea/embedded/qt/webkit/Tools/gdb/')
+import webkit
+end
+
+# Pretty-printers for libstc++.
+python
+import sys
+sys.path.insert(0, '/home/ralph/workarea/embedded/gdb/libstdc++-v3/python/')
+from libstdcxx import register_libstdcxx_printers
+register_libstdcxx_printers (None)
+end
+
+set print pretty 1
+
+define bsave
+  save breakpoints breakpoints.gdb
+end 
+
+document bsave
+  store actual breakpoints
+end
+
+define bload
+  source breakpoints.gdb
+end
+
+document bload
+  restore breakpoints saved by bsave
+end
+
+define pqs
+  printf "(QString)0x%x (length=%i): \"",&$arg0,$arg0.d->size
+  set $i=0
+  while $i < $arg0.d->size
+    set $c=$arg0.d->data[$i++]
+    if $c < 32 || $c > 127
+       printf "\\u0x%04x", $c
+    else
+       printf "%c", (char)$c
+    end
+  end
+  printf "\"\n"
+end
+

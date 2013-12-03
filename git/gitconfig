@@ -1,0 +1,27 @@
+;; Personal git global configuration
+;;
+[core]
+    editor = vim
+
+[color]
+    ui = auto
+
+[user]
+    name = Ralph.Chang
+    email = Ralph.Chang@Qisda.com
+
+[http]
+    sslverify = false
+
+[alias]
+  ;ls = log --graph --decorate --oneline
+  ;ll = log --graph --decorate --oneline --all
+  ls = log --graph --format=format:'%C(yellow)%h%C(reset) - %C(cyan)(%ar)%C(reset)%C(auto)%d%C(reset) %C(bold white)%s%C(reset) %C(white)— %an%C(reset)' --abbrev-commit --date=relative
+  ll = log --graph --format=format:'%C(yellow)%h%C(reset) - %C(cyan)(%ar)%C(reset)%C(auto)%d%C(reset) %C(bold white)%s%C(reset) %C(white)— %an%C(reset)' --abbrev-commit --date=relative --all
+  st = status --short --branch
+
+[push]
+    default = simple
+
+[merge]
+    defaultToUpstream = true

@@ -1,0 +1,291 @@
+"""""""""""""""""""" PLUGINS
+filetype off
+
+" Download Vundle if you don't have it yet.
+if !isdirectory(expand("~/.vim/bundle/vundle"))
+    !mkdir -p ~/.vim/bundle
+    !git clone git://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+    let s:bootstrap=1
+endif
+
+" Set up Vundle.
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+
+" vim-scripts repos
+"Bundle 'taglist.vim'
+Bundle 'mru.vim'
+Bundle 'lastpos.vim'
+Bundle 'sessionman.vim'
+Bundle 'bufexplorer.zip'
+Bundle 'OmniCppComplete'
+
+" github repos
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'scrooloose/nerdtree.git'
+Bundle 'scrooloose/nerdcommenter.git'
+Bundle 'fholgado/minibufexpl.vim.git'
+Bundle 'ervandew/supertab.git'
+Bundle 'kien/ctrlp.vim.git'
+Bundle 'tpope/vim-fugitive.git'
+Bundle 'majutsushi/tagbar.git'
+Bundle 'kshenoy/vim-signature.git'
+
+" non github repos
+"Bundle 'git://git.wincent.com/command-t.git'
+
+" Install bundles if Vundle was just downloaded.
+if exists("s:bootstrap") && s:bootstrap
+    unlet s:bootstrap
+    BundleInstall
+endif
+
+"""""""""""""""""""" GENERAL SETTINGS
+
+" Color Scheme
+"colorscheme wombat
+"colorscheme ir_black
+colorscheme mustang
+"colorscheme metacosm
+"colorscheme pablo
+"colorscheme desert
+"colorscheme peaksea
+"colorscheme solarized
+"colorscheme Tomorrow-Night
+"colorscheme Tomorrow-Night-Bright
+
+"set background=dark
+"set background=light
+set t_Co=256
+
+syntax on		    " syntax highlight
+filetype plugin indent on
+set encoding=utf-8
+set hidden          " allow editing multiple unsaved buffers
+set showcmd
+set nowrap
+set backspace=indent,eol,start
+
+set nocompatible	" not compatible with the old-fashion vi mode
+"set bs=2		    " allow backspacing over everything in insert mode
+set history=1000	" command line history
+set ruler	    	" show the cursor position all the time
+set autoread		" auto read when file is changed from outside
+set number          " display line number
+
+set clipboard=unnamed	" yank to the system register (*) by default
+set showmatch		" Cursor shows matching ) and }
+set showmode		" Show current mode
+set wildchar=<TAB>	" start wild expansion in the command line using <TAB>
+set wildmenu            " wild char completion menu
+
+set autoindent		" auto indentation
+set hlsearch        " highlight all matched terms
+set incsearch		" incremental search
+set nobackup		" no *~ backup files
+set copyindent		" copy the previous indentation on autoindenting
+set ignorecase		" ignore case when searching
+set smartcase		" ignore case if search pattern is all lowercase,case-sensitive otherwise
+
+set mouse=nv        " enable mouse in seletec mode
+set laststatus=2
+
+":retab
+set smarttab		" insert tabs on the start of a line according to context
+set expandtab        "replace <TAB> with spaces, use CTRL+V <TAB> to input <TAB>
+set softtabstop=4 tabstop=4 shiftwidth=4
+
+" ignore these files while expanding wild chars
+set wildignore+=*.aux,*.out,*.toc " LaTeX intermediate files
+set wildignore+=*.jpg,*.bmp,*.gif " binary images
+set wildignore+=*.luac " Lua byte code
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.class,*.mo,*.la,*.so,*.obj " compiled object files
+set wildignore+=*.pyc " Python byte code
+set wildignore+=*.spl " compiled spelling word lists
+set wildignore+=*.sw? " Vim swap files
+
+
+"""""""""""""""""""" FILES SPECIFIC
+
+" auto reload vimrc when editing it
+autocmd! bufwritepost .vimrc source ~/.vimrc
+"au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
+au FileType Makefile set noexpandtab
+
+" highlight all trailing whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+
+" Automatically removing all trailing whitespace
+function! TrimWhiteSpace()
+    %s/\s\+$//e
+endfunction
+" autocmd FileType c,cpp,java autocmd BufWritePre <buffer> :call TrimWhiteSpace()
+
+"""""""""""""""""""" KEYBINDINGS
+
+" Pressing return clears highlighted search
+":nnoremap <CR> :nohlsearch<CR>/<BS>    " leads ENTER key invalid in quickfix Window
+nmap <silent> <leader><CR> :nohlsearch<CR>
+" When highlighting search terms, make sure text is contrasting color
+":highlight Search ctermbg=yellow ctermfg=black
+:highlight Search ctermbg=1 ctermfg=15
+
+" map key to switch buffers
+nmap <silent> gb :bnext<CR>
+nmap <silent> gB :bprev<CR>
+
+function! UpdateTags()
+  execute ":!ctags -R --languages=C++ --c++-kinds=+p --fields=+iaS --extra=+q ./"
+  echohl StatusLine | echo "C/C++ tag updated" | echohl None
+endfunction
+nnoremap <F4> :call UpdateTags()
+
+" call HexMode to switch hex mode
+"nnoremap <C-H> :Hexmode<CR>
+"inoremap <C-H> <Esc>:Hexmode<CR>
+"vnoremap <C-H> :<C-U>Hexmode<CR>
+nnoremap <silent> <leader>h :Hexmode<cr>
+
+" ex command for toggling hex mode - define mapping if desired
+command -bar Hexmode call ToggleHex()
+" helper function to toggle hex mode
+function! ToggleHex()
+   " hex mode should be considered a read-only operation
+   " save values for modified and read-only for restoration later,
+   " and clear the read-only flag for now
+   let l:modified=&mod
+   let l:oldreadonly=&readonly
+   let &readonly=0
+   let l:oldmodifiable=&modifiable
+   let &modifiable=1
+   if !exists("b:editHex") || !b:editHex
+       " save old options
+       let b:oldft=&ft
+       let b:oldbin=&bin
+       " set new options
+       setlocal binary " make sure it overrides any textwidth, etc.
+       let &ft="xxd"
+       " set status
+       let b:editHex=1
+       " switch to hex editor
+       %!xxd
+   else
+       " restore old options
+       let &ft=b:oldft
+       if !b:oldbin
+           setlocal nobinary
+       endif
+       " set status
+       let b:editHex=0
+       " return to normal editing
+       %!xxd -r
+   endif
+   " restore values for modified and read only state
+   let &mod=l:modified
+   let &readonly=l:oldreadonly
+   let &modifiable=l:oldmodifiable
+endfunction
+
+" F3 to a vimgrep of the current search pattern
+nnoremap <F3> :noautocmd vimgrep /<C-R><C-W>/ %:p:h/**/*
+
+"""""""""""""""""""" PLUGINS
+
+" ctrlp
+let g:ctrlp_working_path_mode = 'ra' " when invoked, CtrlP will set its local working directory according to this variable
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
+"let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'  " Windows
+let g:ctrlp_max_height=15
+let g:ctrlp_follow_symlinks=1
+
+" rebind my favorite commands from Git.vim for Fugitive
+nmap <leader>gs :Gstatus<cr>
+nmap <leader>gc :Gcommit<cr>
+nmap <leader>ga :Gwrite<cr>
+nmap <leader>gl :Glog<cr>
+nmap <leader>gd :Gdiff<cr>
+
+" mru                                                              
+let MRU_Auto_Close = 0
+
+" powerline
+let g:Powerline_symbols = 'fancy'
+let g:Powerline_colorscheme = 'solarized256'
+
+" supertab
+let g:SuperTabDefaultCompletionType = "context"
+
+" omnicppcomplete options
+set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
+let OmniCpp_GlobalScopeSearch   = 1
+let OmniCpp_DisplayMode         = 1
+"let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
+let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
+let OmniCpp_ShowAccess          = 1 "show access in pop-up
+let OmniCpp_SelectFirstItem     = 1 "select first item in pop-up
+set completeopt=menuone,menu,longest
+
+" minibufexpl
+let g:miniBufExplMapWindowNavVim = 1    "Ctrl-<hjkl> to move to window
+let g:miniBufExplTabWrap = 1     " make tabs show complete (no broken on two lines)
+let g:miniBufExplMapCTabSwitchBufs=1
+let g:miniBufExplMapWindowNavArrows=1
+"let g:miniBufExplForceSyntaxEnable = 1  "The following setting will cause MBE to try and turn highlighting back on (introduced in 6.3.1):
+let g:miniBufExplModSelTarget = 1   "in order to force MBE to try to place selected buffers into a window that does not have a nonmodifiable buffer.
+let g:miniBufExplUseSingleClick = 1
+let g:miniBufExplMaxSize = 3
+
+" taglists
+"let Tlist_Ctags_Cmd = 'ctags'
+"let Tlist_Show_One_File = 1            "Display the tags for only one file in the taglist window
+"let Tlist_Exit_OnlyWindow = 1          "If the 'Tlist_Exit_OnlyWindow' option is set, then exit Vim if only the taglist window is present.
+"let Tlist_Use_Right_Window = 1         "Open the window at the rightmost place
+"let Tlist_Sort_Type = "name"           "Sort by name in default
+"nnoremap <F12> :TlistToggle<CR>
+
+" tagbar
+nnoremap <F8> :TagbarToggle<CR>
+
+" nerdtree
+nnoremap <silent> <leader>w :NERDTreeToggle<cr>
+
+" quickfix
+command -bang -nargs=? QuickFix call QFixToggle(<bang>0)
+function! QFixToggle(forced)
+    if exists("g:qfix_win") && a:forced == 0
+        cclose
+        unlet g:qfix_win
+    else
+        copen 20
+        let g:qfix_win = bufnr("$")
+    endif
+endfunction
+nnoremap <leader>q :QuickFix<CR>
+
+" quickfix for the cscope results
+if has('quickfix')
+    set cscopequickfix=s-,c-,d-,i-,t-,e-,g-
+endif
+
+" command-t
+"let g:CommandTMaxFiles=20000
+"nmap <silent> <Leader>t :CommandT<CR>
+"nmap <silent> <Leader>b :CommandTBuffer<CR>
+
+
+"""""""""""""""""""" MISC.
+
+if $ANDROID_BUILD_TOP !=""
+"This assumes you have sourced the Android build environment
+cscope add $ANDROID_BUILD_TOP/cscope.out $ANDROID_BUILD_TOP
+endif
+
+
