@@ -33,6 +33,7 @@ Bundle 'kien/ctrlp.vim.git'
 Bundle 'tpope/vim-fugitive.git'
 Bundle 'majutsushi/tagbar.git'
 Bundle 'kshenoy/vim-signature.git'
+Bundle 'raleighc/cscope_map.vim'
 
 " non github repos
 "Bundle 'git://git.wincent.com/command-t.git'
