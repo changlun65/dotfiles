@@ -139,8 +139,8 @@ nmap <silent> <leader><CR> :nohlsearch<CR>
 :highlight Search ctermbg=1 ctermfg=15
 
 " map key to switch buffers
-nmap <silent> gb :bnext<CR>
-nmap <silent> gB :bprev<CR>
+nnoremap <C-N> :bnext<CR>
+nnoremap <C-B> :bprev<CR>
 
 function! UpdateTags()
   execute ":!ctags -R --languages=C++ --c++-kinds=+p --fields=+iaS --extra=+q ./"
