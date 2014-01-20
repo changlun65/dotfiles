@@ -25,6 +25,7 @@ Bundle 'OmniCppComplete'
 
 " github repos
 Bundle 'Lokaltog/vim-powerline'
+Bundle 'Lokaltog/vim-easymotion'
 Bundle 'scrooloose/nerdtree.git'
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'fholgado/minibufexpl.vim.git'
@@ -198,6 +199,9 @@ endfunction
 nnoremap <F3> :noautocmd vimgrep /<C-R><C-W>/ %:p:h/**/*
 
 """""""""""""""""""" PLUGINS
+
+" easymotion
+let g:EasyMotion_leader_key = ','
 
 " ctrlp
 let g:ctrlp_working_path_mode = 'ra' " when invoked, CtrlP will set its local working directory according to this variable
