@@ -24,16 +24,18 @@ Bundle 'bufexplorer.zip'
 Bundle 'OmniCppComplete'
 
 " github repos
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'Lokaltog/vim-easymotion'
+Bundle 'Lokaltog/vim-powerline.git'
+Bundle 'Lokaltog/vim-easymotion.git'
 Bundle 'scrooloose/nerdtree.git'
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'fholgado/minibufexpl.vim.git'
 Bundle 'ervandew/supertab.git'
 Bundle 'kien/ctrlp.vim.git'
 Bundle 'tpope/vim-fugitive.git'
+Bundle 'airblade/vim-gitgutter.git'
 Bundle 'majutsushi/tagbar.git'
 Bundle 'kshenoy/vim-signature.git'
+Bundle 'Raimondi/delimitMate.git'
 Bundle 'raleighc/cscope_map.vim'
 
 " non github repos
@@ -199,6 +201,13 @@ endfunction
 nnoremap <F3> :noautocmd vimgrep /<C-R><C-W>/ %:p:h/**/*
 
 """""""""""""""""""" PLUGINS
+
+" vim-gitgutter
+" highlight clear SignColumn
+highlight SignColumn ctermbg=Black
+" turn off vim-gitgutter by default
+let g:gitgutter_enabled = 0
+nmap <leader>gg :GitGutterToggle<cr>
 
 " easymotion
 let g:EasyMotion_leader_key = ','
