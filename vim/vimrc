@@ -17,7 +17,7 @@ Bundle 'gmarik/vundle'
 
 " vim-scripts repos
 "Bundle 'taglist.vim'
-Bundle 'mru.vim'
+"Bundle 'mru.vim' # deprecated by ctrlp
 Bundle 'lastpos.vim'
 Bundle 'sessionman.vim'
 Bundle 'bufexplorer.zip'
@@ -233,6 +233,7 @@ let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 "let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'  " Windows
 let g:ctrlp_max_height=15
 let g:ctrlp_follow_symlinks=1
+let g:ctrlp_open_multiple_files = '1vjr'
 
 " rebind my favorite commands from Git.vim for Fugitive
 nmap <leader>gs :Gstatus<cr>
@@ -241,8 +242,8 @@ nmap <leader>ga :Gwrite<cr>
 nmap <leader>gl :Glog<cr>
 nmap <leader>gd :Gdiff<cr>
 
-" mru                                                              
-let MRU_Auto_Close = 0
+" mru, deprecated by ctrlp                                                              
+"let MRU_Auto_Close = 0
 
 " powerline
 let g:Powerline_symbols = 'fancy'
