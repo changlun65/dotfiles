@@ -200,6 +200,10 @@ endfunction
 " F3 to a vimgrep of the current search pattern
 nnoremap <F3> :noautocmd vimgrep /<C-R><C-W>/ %:p:h/**/*
 
+" F10 to toggle paste and nopaste mode
+" Stackoverflow Alternative: I usually use :r! cat and then paste ( shift + insert ) the content, and CTRL+D.
+nnoremap <F10> :set invpaste paste?<CR>
+
 """""""""""""""""""" PLUGINS
 
 " vim-gitgutter
