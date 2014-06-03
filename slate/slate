@@ -26,7 +26,7 @@ config undoOps move,resize
 # The HYPER key (bound using PCKeyboardHack and KeyRemap4Macbook)
 # ======================================
  
-alias hyper ctrl;shift
+alias hyper ctrl;alt;cmd
 
 
 bind space:${hyper} hint ASDFGHJKLQWERTYUIOPCVBN # use whatever keys you want
