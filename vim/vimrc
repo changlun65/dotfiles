@@ -17,23 +17,25 @@ Bundle 'gmarik/vundle'
 
 " vim-scripts repos
 "Bundle 'taglist.vim'
-Bundle 'mru.vim'
+"Bundle 'mru.vim' # deprecated by ctrlp
 Bundle 'lastpos.vim'
 Bundle 'sessionman.vim'
 Bundle 'bufexplorer.zip'
 Bundle 'OmniCppComplete'
 
 " github repos
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'Lokaltog/vim-easymotion'
+Bundle 'Lokaltog/vim-powerline.git'
+Bundle 'Lokaltog/vim-easymotion.git'
 Bundle 'scrooloose/nerdtree.git'
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'fholgado/minibufexpl.vim.git'
 Bundle 'ervandew/supertab.git'
 Bundle 'kien/ctrlp.vim.git'
 Bundle 'tpope/vim-fugitive.git'
+Bundle 'airblade/vim-gitgutter.git'
 Bundle 'majutsushi/tagbar.git'
 Bundle 'kshenoy/vim-signature.git'
+Bundle 'Raimondi/delimitMate.git'
 Bundle 'raleighc/cscope_map.vim'
 
 " non github repos
@@ -198,18 +200,51 @@ endfunction
 " F3 to a vimgrep of the current search pattern
 nnoremap <F3> :noautocmd vimgrep /<C-R><C-W>/ %:p:h/**/*
 
+" F10 to toggle paste and nopaste mode
+" Stackoverflow Alternative: I usually use :r! cat and then paste ( shift + insert ) the content, and CTRL+D.
+nnoremap <F10> :set invpaste paste?<CR>
+
 """""""""""""""""""" PLUGINS
 
+" vim-gitgutter
+" highlight clear SignColumn
+highlight SignColumn ctermbg=Black
+" turn off vim-gitgutter by default
+let g:gitgutter_enabled = 0
+nmap <leader>gg :GitGutterToggle<cr>
+
 " easymotion
-let g:EasyMotion_leader_key = ','
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" Bi-directional find motion
+" Jump to anywhere you want with minimal keystrokes, with just one key
+" binding.
+" `s{char}{label}`
+"nmap s <Plug>(easymotion-s)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap s <Plug>(easymotion-s2)
+" Turn on case sensitive feature
+let g:EasyMotion_smartcase = 1
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
 
 " ctrlp
 let g:ctrlp_working_path_mode = 'ra' " when invoked, CtrlP will set its local working directory according to this variable
 let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
+"let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
 "let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'  " Windows
-let g:ctrlp_max_height=15
+let g:ctrlp_user_command = {
+    \ 'types': {
+        \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+    \ },
+    \ 'fallback': 'find %s -type f'
+\ }
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:15,results:15'
 let g:ctrlp_follow_symlinks=1
+let g:ctrlp_open_multiple_files = '1vjr'
 
 " rebind my favorite commands from Git.vim for Fugitive
 nmap <leader>gs :Gstatus<cr>
@@ -218,8 +253,8 @@ nmap <leader>ga :Gwrite<cr>
 nmap <leader>gl :Glog<cr>
 nmap <leader>gd :Gdiff<cr>
 
-" mru                                                              
-let MRU_Auto_Close = 0
+" mru, deprecated by ctrlp                                                              
+"let MRU_Auto_Close = 0
 
 " powerline
 let g:Powerline_symbols = 'fancy'
