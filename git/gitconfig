@@ -25,3 +25,7 @@
 
 [merge]
     defaultToUpstream = true
+[diff]
+	tool = kdiff3
+[pack]
+	compression = 0
