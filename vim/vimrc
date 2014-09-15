@@ -119,6 +119,14 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 "au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 au FileType Makefile set noexpandtab
 
+" The second approach is to move the quickfix window to the bottom of the
+" window layout using an auto-command.
+autocmd FileType qf wincmd J
+" This trigger takes advantage of the fact that the quickfix window can be
+" easily distinguished by its file-type, qf. The wincmd J command is
+" equivalent to the Ctrl+W, Shift+J shortcut telling Vim to move a window to
+" the very bottom (see :help :wincmd and :help ^WJ).
+
 " highlight all trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/

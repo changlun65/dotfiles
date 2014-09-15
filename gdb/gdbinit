@@ -1,3 +1,6 @@
+# STL GDB evaluators
+source /home/ralph/workarea/embedded/gdb/stl-views/stl_views.gdb
+
 # python scripting for QT's pretty printers.
 python
 import sys
@@ -31,7 +34,7 @@ end
 python
 import sys
 sys.path.insert(0, '/home/ralph/workarea/embedded/gdb/libstdc++-v3/python/')
-from libstdcxx import register_libstdcxx_printers
+from libstdcxx.v6.printers import register_libstdcxx_printers
 register_libstdcxx_printers (None)
 end
 
