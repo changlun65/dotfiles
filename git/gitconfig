@@ -8,7 +8,7 @@
 
 [user]
     name = Ralph.Chang
-    email = Ralph.Chang@Qisda.com
+    email = Ralph.Chang@mediatek.com
 
 [http]
     sslverify = false
@@ -19,6 +19,9 @@
   ls = log --graph --format=format:'%C(yellow)%h%C(reset) - %C(cyan)(%ar)%C(reset)%C(auto)%d%C(reset) %C(bold white)%s%C(reset) %C(white)— %an%C(reset)' --abbrev-commit --date=relative
   ll = log --graph --format=format:'%C(yellow)%h%C(reset) - %C(cyan)(%ar)%C(reset)%C(auto)%d%C(reset) %C(bold white)%s%C(reset) %C(white)— %an%C(reset)' --abbrev-commit --date=relative --all
   st = status --short --branch
+
+  ; git-perforce bridge
+  p4 = !~/bin/git-p4.py
 
 [push]
     default = simple
