@@ -19,7 +19,7 @@ Bundle 'gmarik/vundle'
 "Bundle 'taglist.vim'
 "Bundle 'mru.vim' # deprecated by ctrlp
 Bundle 'lastpos.vim'
-Bundle 'sessionman.vim'
+"Bundle 'sessionman.vim' # deprecated by vim-session
 Bundle 'bufexplorer.zip'
 Bundle 'OmniCppComplete'
 
@@ -36,6 +36,8 @@ Bundle 'airblade/vim-gitgutter.git'
 Bundle 'majutsushi/tagbar.git'
 Bundle 'kshenoy/vim-signature.git'
 Bundle 'Raimondi/delimitMate.git'
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-session'
 Bundle 'raleighc/cscope_map.vim'
 
 " non github repos
@@ -157,7 +159,7 @@ function! UpdateTags()
   execute ":!ctags -R --languages=C++ --c++-kinds=+p --fields=+iaS --extra=+q ./"
   echohl StatusLine | echo "C/C++ tag updated" | echohl None
 endfunction
-nnoremap <F4> :call UpdateTags()
+nnoremap <F5> :call UpdateTags()
 
 " call HexMode to switch hex mode
 "nnoremap <C-H> :Hexmode<CR>
@@ -205,8 +207,10 @@ function! ToggleHex()
    let &modifiable=l:oldmodifiable
 endfunction
 
-" F3 to a vimgrep of the current search pattern
+" F3 to a vimgrep of the current search pattern (Find in Files)
 nnoremap <F3> :noautocmd vimgrep /<C-R><C-W>/ %:p:h/**/*
+" F4 to a vimgrep of the current search pattern
+nnoremap <F4> :noautocmd vimgrep /<C-R><C-W>/ %
 
 " F10 to toggle paste and nopaste mode
 " Stackoverflow Alternative: I usually use :r! cat and then paste ( shift + insert ) the content, and CTRL+D.
@@ -259,10 +263,15 @@ nmap <leader>gs :Gstatus<cr>
 nmap <leader>gc :Gcommit<cr>
 nmap <leader>ga :Gwrite<cr>
 nmap <leader>gl :Glog<cr>
+nmap <leader>gb :Gblame<cr>
 nmap <leader>gd :Gdiff<cr>
 
 " mru, deprecated by ctrlp                                                              
 "let MRU_Auto_Close = 0
+
+" vim session
+let g:session_autoload = 'no'
+let g:session_autosave = 'yes'
 
 " powerline
 let g:Powerline_symbols = 'fancy'
