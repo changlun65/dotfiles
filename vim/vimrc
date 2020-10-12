@@ -1,53 +1,62 @@
-"""""""""""""""""""" PLUGINS
-filetype off
+"""""""""""""""""""" Configure PLUGINS
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-" Download Vundle if you don't have it yet.
-if !isdirectory(expand("~/.vim/bundle/vundle"))
-    !mkdir -p ~/.vim/bundle
-    !git clone git://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-    let s:bootstrap=1
-endif
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
-" Set up Vundle.
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" let Vundle manage Vundle
-Bundle 'gmarik/vundle'
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
 " vim-scripts repos
-"Bundle 'taglist.vim'
-"Bundle 'mru.vim' # deprecated by ctrlp
-Bundle 'lastpos.vim'
-"Bundle 'sessionman.vim' # deprecated by vim-session
-Bundle 'bufexplorer.zip'
-Bundle 'OmniCppComplete'
 
-" github repos
-Bundle 'Lokaltog/vim-powerline.git'
-Bundle 'Lokaltog/vim-easymotion.git'
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'scrooloose/nerdcommenter.git'
-Bundle 'fholgado/minibufexpl.vim.git'
-Bundle 'ervandew/supertab.git'
-Bundle 'kien/ctrlp.vim.git'
-Bundle 'tpope/vim-fugitive.git'
-Bundle 'airblade/vim-gitgutter.git'
-Bundle 'majutsushi/tagbar.git'
-Bundle 'kshenoy/vim-signature.git'
-Bundle 'Raimondi/delimitMate.git'
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-session'
-Bundle 'raleighc/cscope_map.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+""Plugin 'taglist.vim'
+""Plugin 'mru.vim' # deprecated by ctrlp
+"Plugin 'lastpos.vim'
+""Plugin 'sessionman.vim' # deprecated by vim-session
+"Plugin 'bufexplorer.zip'
+"Plugin 'OmniCppComplete'
+
+"" github repos
+"Plugin 'Lokaltog/vim-powerline.git'
+"Plugin 'Lokaltog/vim-easymotion.git'
+"Plugin 'scrooloose/nerdtree.git'
+"Plugin 'scrooloose/nerdcommenter.git'
+"Plugin 'fholgado/minibufexpl.vim.git'
+"Plugin 'ervandew/supertab.git'
+"Plugin 'kien/ctrlp.vim.git'
+"Plugin 'tpope/vim-fugitive.git'
+"Plugin 'airblade/vim-gitgutter.git'
+"Plugin 'majutsushi/tagbar.git'
+"Plugin 'kshenoy/vim-signature.git'
+"Plugin 'Raimondi/delimitMate.git'
+"Plugin 'xolox/vim-misc'
+"Plugin 'xolox/vim-session'
+"Plugin 'raleighc/cscope_map.vim'
 
 " non github repos
-"Bundle 'git://git.wincent.com/command-t.git'
+"Plugin 'git://git.wincent.com/command-t.git'
 
-" Install bundles if Vundle was just downloaded.
-if exists("s:bootstrap") && s:bootstrap
-    unlet s:bootstrap
-    BundleInstall
-endif
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 
 """""""""""""""""""" GENERAL SETTINGS
 
@@ -75,7 +84,7 @@ set showcmd
 set nowrap
 set backspace=indent,eol,start
 
-set nocompatible	" not compatible with the old-fashion vi mode
+"set nocompatible	" not compatible with the old-fashion vi mode
 "set bs=2		    " allow backspacing over everything in insert mode
 set history=1000	" command line history
 set ruler	    	" show the cursor position all the time
