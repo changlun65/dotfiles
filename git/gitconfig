@@ -23,12 +23,4 @@
   ; git-perforce bridge
   p4 = !~/bin/git-p4.py
 
-[push]
-    default = simple
 
-[merge]
-    defaultToUpstream = true
-[diff]
-	tool = kdiff3
-[pack]
-	compression = 0

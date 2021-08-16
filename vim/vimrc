@@ -1,129 +1,88 @@
-"""""""""""""""""""" Configure PLUGINS
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Gotta be first
+set nocompatible
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+filetype off
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" vim-scripts repos
-
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-
-""Plugin 'taglist.vim'
-""Plugin 'mru.vim' # deprecated by ctrlp
-"Plugin 'lastpos.vim'
-""Plugin 'sessionman.vim' # deprecated by vim-session
-"Plugin 'bufexplorer.zip'
-"Plugin 'OmniCppComplete'
-
-"" github repos
-"Plugin 'Lokaltog/vim-powerline.git'
-"Plugin 'Lokaltog/vim-easymotion.git'
-"Plugin 'scrooloose/nerdtree.git'
-"Plugin 'scrooloose/nerdcommenter.git'
-"Plugin 'fholgado/minibufexpl.vim.git'
-"Plugin 'ervandew/supertab.git'
-"Plugin 'kien/ctrlp.vim.git'
-"Plugin 'tpope/vim-fugitive.git'
-"Plugin 'airblade/vim-gitgutter.git'
-"Plugin 'majutsushi/tagbar.git'
-"Plugin 'kshenoy/vim-signature.git'
-"Plugin 'Raimondi/delimitMate.git'
-"Plugin 'xolox/vim-misc'
-"Plugin 'xolox/vim-session'
-"Plugin 'raleighc/cscope_map.vim'
-
-" non github repos
-"Plugin 'git://git.wincent.com/command-t.git'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
+" vim-plug Installation
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+" vim-plug Automatic installation
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-"""""""""""""""""""" GENERAL SETTINGS
+" Specify a directory for plugins
+call plug#begin('~/.vim/plugged')
 
-" Color Scheme
-"colorscheme wombat
-"colorscheme ir_black
-colorscheme mustang
-"colorscheme metacosm
-"colorscheme pablo
-"colorscheme desert
-"colorscheme peaksea
-"colorscheme solarized
-"colorscheme Tomorrow-Night
-"colorscheme Tomorrow-Night-Bright
+" ----- Making Vim look good ------------------------------------------
+Plug 'altercation/vim-colors-solarized'
+Plug 'tomasr/molokai'
+Plug 'croaker/mustang-vim'
+Plug 'itchyny/lightline.vim'
 
-"set background=dark
-"set background=light
-set t_Co=256
+" ----- Vim as a programmer's text editor -----------------------------
+Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
+" Plug 'scrooloose/syntastic'
+Plug 'kien/ctrlp.vim'
+Plug 'vim-scripts/a.vim'
 
-syntax on		    " syntax highlight
+let g:ale_lint_on_enter = 0
+Plug 'w0rp/ale'
+
+" ----- Working with Git ----------------------------------------------
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+
+Plug 'christoomey/vim-tmux-navigator'
+
+" --- C-tags integration --- "
+Plug 'majutsushi/tagbar'
+
+call plug#end()
+
 filetype plugin indent on
-set encoding=utf-8
-set hidden          " allow editing multiple unsaved buffers
-set showcmd
-set nowrap
+
+
+" --- General settings ---
 set backspace=indent,eol,start
-
-"set nocompatible	" not compatible with the old-fashion vi mode
-"set bs=2		    " allow backspacing over everything in insert mode
-set history=1000	" command line history
-set ruler	    	" show the cursor position all the time
-set autoread		" auto read when file is changed from outside
-set number          " display line number
-
-set clipboard=unnamed	" yank to the system register (*) by default
-set showmatch		" Cursor shows matching ) and }
-set showmode		" Show current mode
-set wildchar=<TAB>	" start wild expansion in the command line using <TAB>
+set ruler               " show the cursor position all the time
+set number              " display line number
+set showcmd
+set noshowmode
+set clipboard=unnamed   " yank to the system register (*) by default
+set showmatch           " Cursor shows matching ) and }
+set wildchar=<TAB>      " start wild expansion in the command line using <TAB>
 set wildmenu            " wild char completion menu
 
-set autoindent		" auto indentation
-set hlsearch        " highlight all matched terms
-set incsearch		" incremental search
-set nobackup		" no *~ backup files
-set copyindent		" copy the previous indentation on autoindenting
-set ignorecase		" ignore case when searching
-set smartcase		" ignore case if search pattern is all lowercase,case-sensitive otherwise
+set autoindent          " auto indentation
+set hlsearch            " highlight all matched terms
+set incsearch           " incremental search
+set nobackup            " no *~ backup files
+"set copyindent         " copy the previous indentation on autoindenting
+set ignorecase          " ignore case when searching
+set smartcase           " ignore case if search pattern is all lowercase,case-sensitive otherwise
 
-set mouse=nv        " enable mouse in seletec mode
-set laststatus=2
+" set mouse=a
+set mouse=nv            " enable mouse in seletec mode
 
 ":retab
-set smarttab		" insert tabs on the start of a line according to context
-set expandtab        "replace <TAB> with spaces, use CTRL+V <TAB> to input <TAB>
+set smarttab            " insert tabs on the start of a line according to context
+set expandtab           " replace <TAB> with spaces, use CTRL+V <TAB> to input <TAB>
 set softtabstop=4 tabstop=4 shiftwidth=4
 
-" ignore these files while expanding wild chars
-set wildignore+=*.aux,*.out,*.toc " LaTeX intermediate files
-set wildignore+=*.jpg,*.bmp,*.gif " binary images
-set wildignore+=*.luac " Lua byte code
-set wildignore+=*.o,*.obj,*.exe,*.dll,*.class,*.mo,*.la,*.so,*.obj " compiled object files
-set wildignore+=*.pyc " Python byte code
-set wildignore+=*.spl " compiled spelling word lists
-set wildignore+=*.sw? " Vim swap files
+syntax on
 
+colorscheme mustang
 
-"""""""""""""""""""" FILES SPECIFIC
+" --- Files Specific ---
+" This will jump to the last known cursor position
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+endif
 
 " auto reload vimrc when editing it
 autocmd! bufwritepost .vimrc source ~/.vimrc
@@ -151,8 +110,8 @@ function! TrimWhiteSpace()
 endfunction
 " autocmd FileType c,cpp,java autocmd BufWritePre <buffer> :call TrimWhiteSpace()
 
-"""""""""""""""""""" KEYBINDINGS
 
+" --- Key Bindings ---
 " Pressing return clears highlighted search
 ":nnoremap <CR> :nohlsearch<CR>/<BS>    " leads ENTER key invalid in quickfix Window
 nmap <silent> <leader><CR> :nohlsearch<CR>
@@ -164,194 +123,80 @@ nmap <silent> <leader><CR> :nohlsearch<CR>
 nnoremap <C-N> :bnext<CR>
 nnoremap <C-B> :bprev<CR>
 
-function! UpdateTags()
-  execute ":!ctags -R --languages=C++ --c++-kinds=+p --fields=+iaS --extra=+q ./"
-  echohl StatusLine | echo "C/C++ tag updated" | echohl None
-endfunction
-nnoremap <F5> :call UpdateTags()
+" --- Plugin Settings ---
+"
+" ----- lightline.vim  -----
+" Always show statusbar
+set laststatus=2
 
-" call HexMode to switch hex mode
-"nnoremap <C-H> :Hexmode<CR>
-"inoremap <C-H> <Esc>:Hexmode<CR>
-"vnoremap <C-H> :<C-U>Hexmode<CR>
-nnoremap <silent> <leader>h :Hexmode<cr>
+if !has('gui_running')
+    set t_Co=256
+endif
 
-" ex command for toggling hex mode - define mapping if desired
-command -bar Hexmode call ToggleHex()
-" helper function to toggle hex mode
-function! ToggleHex()
-   " hex mode should be considered a read-only operation
-   " save values for modified and read-only for restoration later,
-   " and clear the read-only flag for now
-   let l:modified=&mod
-   let l:oldreadonly=&readonly
-   let &readonly=0
-   let l:oldmodifiable=&modifiable
-   let &modifiable=1
-   if !exists("b:editHex") || !b:editHex
-       " save old options
-       let b:oldft=&ft
-       let b:oldbin=&bin
-       " set new options
-       setlocal binary " make sure it overrides any textwidth, etc.
-       let &ft="xxd"
-       " set status
-       let b:editHex=1
-       " switch to hex editor
-       %!xxd
-   else
-       " restore old options
-       let &ft=b:oldft
-       if !b:oldbin
-           setlocal nobinary
-       endif
-       " set status
-       let b:editHex=0
-       " return to normal editing
-       %!xxd -r
-   endif
-   " restore values for modified and read only state
-   let &mod=l:modified
-   let &readonly=l:oldreadonly
-   let &modifiable=l:oldmodifiable
-endfunction
+" set lightline to include git-branch
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ,
+      \             [ 'venv', 'readonly'] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head',
+      \    'venv': 'virtualenv#statusline'
+      \ },
+      \ }
 
-" F3 to a vimgrep of the current search pattern (Find in Files)
-nnoremap <F3> :noautocmd vimgrep /<C-R><C-W>/ %:p:h/**/*
-" F4 to a vimgrep of the current search pattern
-nnoremap <F4> :noautocmd vimgrep /<C-R><C-W>/ %
 
-" F10 to toggle paste and nopaste mode
-" Stackoverflow Alternative: I usually use :r! cat and then paste ( shift + insert ) the content, and CTRL+D.
-nnoremap <F10> :set invpaste paste?<CR>
+" ----- jistr/vim-nerdtree-tabs -----
+" Open/close NERDTree Tabs with \t
+nmap <silent> <leader>t :NERDTreeTabsToggle<CR>
+let NERDTreeDirArrows = 0
+" To have NERDTree always open on startup
+let g:nerdtree_tabs_open_on_console_startup = 0
 
-"""""""""""""""""""" PLUGINS
 
-" vim-gitgutter
-" highlight clear SignColumn
-highlight SignColumn ctermbg=Black
-" turn off vim-gitgutter by default
-let g:gitgutter_enabled = 0
-nmap <leader>gg :GitGutterToggle<cr>
+" ----- scrooloose/syntastic settings -----
+let g:syntastic_error_symbol = 'X'
+:let g:syntastic_warning_symbol = 'O'
+augroup mySyntastic
+  au!
+  au FileType tex let b:syntastic_mode = "passive"
+augroup END
 
-" easymotion
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-" Bi-directional find motion
-" Jump to anywhere you want with minimal keystrokes, with just one key
-" binding.
-" `s{char}{label}`
-"nmap s <Plug>(easymotion-s)
-" or
-" `s{char}{char}{label}`
-" Need one more keystroke, but on average, it may be more comfortable.
-nmap s <Plug>(easymotion-s2)
-" Turn on case sensitive feature
-let g:EasyMotion_smartcase = 1
-" JK motions: Line motions
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
 
-" ctrlp
-let g:ctrlp_working_path_mode = 'ra' " when invoked, CtrlP will set its local working directory according to this variable
-let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-"let g:ctrlp_user_command = 'find %s -type f'        " MacOSX/Linux
-"let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'  " Windows
-let g:ctrlp_user_command = {
-    \ 'types': {
-        \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-    \ },
-    \ 'fallback': 'find %s -type f'
-\ }
-let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:15,results:150'
-let g:ctrlp_follow_symlinks=1
-let g:ctrlp_open_multiple_files = '1vjr'
+" ----- airblade/vim-gitgutter settings -----
+" Required after having changed the colorscheme
+hi clear SignColumn
+" In vim-airline, only display "hunks" if the diff is non-zero
+let g:airline#extensions#hunks#non_zero_only = 1
 
-" rebind my favorite commands from Git.vim for Fugitive
-nmap <leader>gs :Gstatus<cr>
-nmap <leader>gc :Gcommit<cr>
-nmap <leader>ga :Gwrite<cr>
-nmap <leader>gl :Glog<cr>
-nmap <leader>gb :Gblame<cr>
-nmap <leader>gd :Gdiff<cr>
+" search ctrlp with regex by default
+let g:ctrlp_regexp_search = 1
+let g:ctrlp_clear_cache_on_exit = 0
 
-" mru, deprecated by ctrlp                                                              
-"let MRU_Auto_Close = 0
 
-" vim session
-let g:session_autoload = 'no'
-let g:session_autosave = 'yes'
-
-" powerline
-let g:Powerline_symbols = 'fancy'
-let g:Powerline_colorscheme = 'solarized256'
-
-" supertab
-let g:SuperTabDefaultCompletionType = "context"
-
-" omnicppcomplete options
-set omnifunc=syntaxcomplete#Complete " override built-in C omnicomplete with C++ OmniCppComplete plugin
-let OmniCpp_GlobalScopeSearch   = 1
-let OmniCpp_DisplayMode         = 1
-"let OmniCpp_ShowScopeInAbbr     = 0 "do not show namespace in pop-up
-let OmniCpp_ShowPrototypeInAbbr = 1 "show prototype in pop-up
-let OmniCpp_ShowAccess          = 1 "show access in pop-up
-let OmniCpp_SelectFirstItem     = 1 "select first item in pop-up
-set completeopt=menuone,menu,longest
-
-" minibufexpl
-let g:miniBufExplMapWindowNavVim = 1    "Ctrl-<hjkl> to move to window
-let g:miniBufExplTabWrap = 1     " make tabs show complete (no broken on two lines)
-let g:miniBufExplMapCTabSwitchBufs=1
-let g:miniBufExplMapWindowNavArrows=1
-"let g:miniBufExplForceSyntaxEnable = 1  "The following setting will cause MBE to try and turn highlighting back on (introduced in 6.3.1):
-let g:miniBufExplModSelTarget = 1   "in order to force MBE to try to place selected buffers into a window that does not have a nonmodifiable buffer.
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplMaxSize = 3
-
-" taglists
-"let Tlist_Ctags_Cmd = 'ctags'
-"let Tlist_Show_One_File = 1            "Display the tags for only one file in the taglist window
-"let Tlist_Exit_OnlyWindow = 1          "If the 'Tlist_Exit_OnlyWindow' option is set, then exit Vim if only the taglist window is present.
-"let Tlist_Use_Right_Window = 1         "Open the window at the rightmost place
-"let Tlist_Sort_Type = "name"           "Sort by name in default
-"nnoremap <F12> :TlistToggle<CR>
-
-" tagbar
-nnoremap <F8> :TagbarToggle<CR>
-
-" nerdtree
-nnoremap <silent> <leader>w :NERDTreeToggle<cr>
-
-" quickfix
-command -bang -nargs=? QuickFix call QFixToggle(<bang>0)
-function! QFixToggle(forced)
-    if exists("g:qfix_win") && a:forced == 0
-        cclose
-        unlet g:qfix_win
-    else
-        copen 20
-        let g:qfix_win = bufnr("$")
+" Keep undo history across sessions by storing it in a file
+if has('persistent_undo')
+    let undo_dir = expand('$HOME/.vim/undo_dir')
+    if !isdirectory(undo_dir)
+        call mkdir(undo_dir, "", 0700)
     endif
-endfunction
-nnoremap <leader>q :QuickFix<CR>
-
-" quickfix for the cscope results
-if has('quickfix')
-    set cscopequickfix=s-,c-,d-,i-,t-,e-,g-
+    set undodir=$HOME/.vim/undo_dir
+    set undofile
 endif
 
-" command-t
-"let g:CommandTMaxFiles=20000
-"nmap <silent> <Leader>t :CommandT<CR>
-"nmap <silent> <Leader>b :CommandTBuffer<CR>
+
+" Macro for inserting a pdb breakpoint in python
+au FileType python nmap <Leader>b Oimport pdb; pdb.set_trace() # BREAKPOINT<C-c>
+
+" Macro for error handling in golang
+ au FileType go nmap <Leader>e Oif err !=nil {<CR>    return err;<CR>}<C-c>
+
+" spell checcking for markdown and text
+au FileType markdown setlocal spell
+au FileType text setlocal spell
 
 
-"""""""""""""""""""" MISC.
-
-if $ANDROID_BUILD_TOP !=""
-"This assumes you have sourced the Android build environment
-cscope add $ANDROID_BUILD_TOP/cscope.out $ANDROID_BUILD_TOP
-endif
 
 
